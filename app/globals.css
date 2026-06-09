@@ -1,26 +1,208 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --font-sans: var(--font-space-grotesk), sans-serif;
+  --font-mono: var(--font-jetbrains-mono), monospace;
+  
+  --animate-scanline: scanline 8s linear infinite;
+  --animate-pulse-slow: pulse-slow 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+  --animate-cyber-glow: cyber-glow 2s ease-in-out infinite alternate;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100%);
   }
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 1;
+    filter: drop-shadow(0 0 15px rgba(6, 182, 212, 0.5));
+  }
+  50% {
+    opacity: 0.7;
+    filter: drop-shadow(0 0 5px rgba(6, 182, 212, 0.2));
+  }
 }
+
+@keyframes cyber-glow {
+  0% {
+    box-shadow: 0 0 5px rgba(139, 92, 246, 0.2), inset 0 0 5px rgba(139, 92, 246, 0.1);
+  }
+  100% {
+    box-shadow: 0 0 15px rgba(139, 92, 246, 0.6), inset 0 0 10px rgba(139, 92, 246, 0.3);
+  }
+}
+
+:root {
+  --cyan-glow: rgba(6, 182, 212, 0.15);
+  --violet-glow: rgba(139, 92, 246, 0.15);
+  --emerald-glow: rgba(16, 185, 129, 0.15);
+}
+
+/* Base styling */
+body {
+  background-color: #030712;
+  color: #f4f4f5;
+  overflow-x: hidden;
+}
+
+/* Custom Grid Background */
+.cyber-grid {
+  background-size: 40px 40px;
+  background-image: 
+    linear-gradient(to right, rgba(6, 182, 212, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(6, 182, 212, 0.03) 1px, transparent 1px);
+  position: relative;
+}
+
+.cyber-grid::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(circle 800px at 50% 200px, rgba(139, 92, 246, 0.04), transparent 85%);
+  pointer-events: none;
+}
+
+/* CRT Scanline styling */
+.scanlines {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(
+    rgba(18, 16, 16, 0) 50%, 
+    rgba(0, 0, 0, 0.15) 50%
+  );
+  background-size: 100% 4px;
+  z-index: 999;
+  pointer-events: none;
+  opacity: 0.35;
+}
+
+.scanline-bar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100px;
+  background: linear-gradient(
+    to bottom,
+    rgba(6, 182, 212, 0),
+    rgba(6, 182, 212, 0.02) 50%,
+    rgba(6, 182, 212, 0)
+  );
+  pointer-events: none;
+  z-index: 1000;
+  animation: scanline 12s linear infinite;
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(9, 9, 11, 0.5);
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(6, 182, 212, 0.2);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(6, 182, 212, 0.5);
+}
+
+/* Cybercard glowing styles */
+.cyber-card-cyan {
+  border: 1px solid rgba(6, 182, 212, 0.15);
+  background: rgba(9, 9, 11, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 10px rgba(6, 182, 212, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cyber-card-cyan:hover {
+  border-color: rgba(6, 182, 212, 0.45);
+  box-shadow: 0 0 20px rgba(6, 182, 212, 0.12), inset 0 0 5px rgba(6, 182, 212, 0.03);
+  transform: translateY(-2px);
+}
+
+.cyber-card-violet {
+  border: 1px solid rgba(139, 92, 246, 0.15);
+  background: rgba(9, 9, 11, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 10px rgba(139, 92, 246, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cyber-card-violet:hover {
+  border-color: rgba(139, 92, 246, 0.45);
+  box-shadow: 0 0 20px rgba(139, 92, 246, 0.12), inset 0 0 5px rgba(139, 92, 246, 0.03);
+  transform: translateY(-2px);
+}
+
+.cyber-card-emerald {
+  border: 1px solid rgba(16, 185, 129, 0.15);
+  background: rgba(9, 9, 11, 0.7);
+  backdrop-filter: blur(12px);
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.03);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.cyber-card-emerald:hover {
+  border-color: rgba(16, 185, 129, 0.45);
+  box-shadow: 0 0 20px rgba(16, 185, 129, 0.12), inset 0 0 5px rgba(16, 185, 129, 0.03);
+  transform: translateY(-2px);
+}
+
+/* Text glowing effects */
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(6, 182, 212, 0.4);
+}
+
+.text-glow-violet {
+  text-shadow: 0 0 10px rgba(139, 92, 246, 0.4);
+}
+
+.text-glow-emerald {
+  text-shadow: 0 0 10px rgba(16, 185, 129, 0.4);
+}
+
+@keyframes flow-line {
+  to {
+    stroke-dashoffset: -20;
+  }
+}
+
+.flow-line {
+  stroke-dasharray: 6 4;
+  animation: flow-line 1s linear infinite;
+}
+
+@keyframes pulse-ring {
+  0% {
+    r: 18;
+    opacity: 0.5;
+  }
+  100% {
+    r: 32;
+    opacity: 0;
+  }
+}
+
+.animate-pulse-ring {
+  animation: pulse-ring 2s cubic-bezier(0.215, 0.610, 0.355, 1) infinite;
+}
+
